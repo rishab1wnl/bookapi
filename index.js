@@ -30,7 +30,7 @@ mongoose.connect(
 }
 ).then(()=>console.log("connection established!!!"));
 
-shapeAI.get("/", (req ,res)=>
+shapeAI.get("/", async (req ,res)=>
 {
    const getAllBooks = await BookModel.find();
     return res.json(getAllBooks);
@@ -48,10 +48,10 @@ return res.json({book: getSpecificBook });
 
 });
 
-shapeAI.get("/c/:category" , (req , res) => {
-    const getSpecificBooks = database.books.filter((book)=> book.category.includes(req.params.category)
-);
-if(getSpecificBooks.length === 0){
+shapeAI.get("/c/:category" , async (req , res) => {
+
+const getSpecificBooks = await BookModel.findOne({category: req.params.category, });
+if(!getSpecificBooks){
     return res.json({Error: `No book found for the category of ${req.params.category}`,
 });
 }
@@ -88,14 +88,14 @@ shapeAI.get("/publications", (req, res)=>
 );
 
 
-shapeAI.post("book/new", (req, res)=>
+shapeAI.post("book/new", async (req, res)=>
 {
 const {newBook} = req.body;
 
-database.books.push(newBook);
+const addNewBook = BookModel.create(newBook);
 
 
-return res.json ({ books: database.books, message: "Book was added!"});
+return res.json ({ books: addNewBook, message: "Book was added!"});
 });
 
 shapeAI.post("/author/new", (req, res)=> 
