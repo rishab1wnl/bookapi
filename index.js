@@ -60,8 +60,9 @@ return res.json({books: getSpecificBooks });
 } 
 );
 
-shapeAI.get("/author",(req, res)=>
+shapeAI.get("/author", async(req, res)=>
 {
+    const getAllAuthors = await AuthorModel.find();
     return res.json({ authors: database.authors});
 });
 
@@ -92,34 +93,34 @@ shapeAI.post("book/new", async (req, res)=>
 {
 const {newBook} = req.body;
 
-const addNewBook = BookModel.create(newBook);
+BookModel.create(newBook);
 
 
-return res.json ({ books: addNewBook, message: "Book was added!"});
+return res.json ({message: "Book was added!"});
 });
 
 shapeAI.post("/author/new", (req, res)=> 
 {
     const {newAuthor} = req.body;
 
-    database.authors.push(newBook);
+ AuthorModel.create(newAuthor);
     
     
-    return res.json ({ authors: database.authors, message: "author was added!"}); 
+    return res.json ({  message: "author was added!"}); 
 });
 
-shapeAI.put("/book/update/:isbn", (req, res)=>
+shapeAI.put("/book/update/:isbn", async (req, res)=>
 {
-database.books.forEach((book)=>
-{
-    if(book.ISBN === req.params.isbn)
+    const updatedBook = await BookModel.findOneAndUpdate({ISBN: req.params.isbn,},
     {
-        book.title = req.body.bookTitle;
-    return; 
-   }
-});
+title: req.body.bookTitle,
+    },
+    {
+        new: true,
+    }
+    );
 
-return res.json({book: database.books});
+return res.json({book: updatedBook});
 });
 
 
