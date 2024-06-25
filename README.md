@@ -99,3 +99,12 @@ bookapi/
 ├── index.js
 ├── package.json
 └── README.md
+```
+
+
+- `API/Book.js`: Handles book-related endpoints.
+- `API/Author.js`: Handles author-related endpoints.
+- `API/Publication.js`: Handles publication-related endpoints.
+- `index.js`: Main entry point for the server.
+
+
