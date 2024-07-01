@@ -105,4 +105,5 @@ bookapi/
 - `API/Publication.js`: Handles publication-related endpoints.
 - `index.js`: Main entry point for the server.
 
+> *This project was developed with ❤️ and ☕.*
 
